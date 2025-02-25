@@ -18,7 +18,7 @@ CORS(app)  # Allow frontend to communicate with backend
 
 # Load the Spotify dataset
 try:
-    df = pd.read_csv("spotify_data.csv")
+    df = pd.read_csv("rspotify_data.csv")
     print("Dataset loaded successfully.")
 except Exception as e:
     print("Error loading dataset:", e)
