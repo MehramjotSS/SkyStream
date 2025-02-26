@@ -62,9 +62,11 @@ def get_weather(city):
         data = response.json()
         print(f"Weather data fetched successfully for {city}.")
         return {
+            'city': city,
             'temperature': data['main']['temp'],
             'humidity': data['main']['humidity'],
-            'rainfall': data.get('rain', {}).get('1h', 0)
+            'rainfall': data.get('rain', {}).get('1h', 0),
+            'weather_condition': data['weather'][0]['main'].lower()  # e.g., "sunny", "rainy"
         }
     else:
         print(f"Failed to fetch weather data for {city}. Status code: {response.status_code}")
@@ -131,11 +133,17 @@ def recommend():
         recommended_songs = df[df['cluster'] == cluster_label].sample(n=5, random_state=42)
         print("Recommended songs:", recommended_songs)
 
-        # Return the recommended songs as JSON
-        return jsonify(recommended_songs[['track_name', 'artist_name']].to_dict(orient="records"))
+        # Return weather data and recommendations
+        return jsonify({
+            "weather": {
+                "city": weather_data['city'],
+                "condition": weather_data['weather_condition'],  # e.g., "sunny", "rainy"
+            },
+            "recommendations": recommended_songs[['track_name', 'artist_name']].to_dict(orient="records")
+        })
     except Exception as e:
         print("Error in recommend function:", e)
         return jsonify({"error": "An internal server error occurred"}), 500
-    
+
 if __name__ == '__main__':
     app.run(debug=True)

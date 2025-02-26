@@ -4,7 +4,9 @@ import './App.css';
 function App() {
   const [city, setCity] = useState('');
   const [recommendations, setRecommendations] = useState([]);
+  const [weather, setWeather] = useState(null);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRecommendations = async () => {
     if (!city) {
@@ -12,9 +14,10 @@ function App() {
       return;
     }
 
-    try {
-      console.log("Sending request to backend with city:", city); // Debug statement
+    setIsLoading(true);
+    setError('');
 
+    try {
       const response = await fetch('http://127.0.0.1:5000/recommend', {
         method: 'POST',
         headers: {
@@ -23,49 +26,82 @@ function App() {
         body: JSON.stringify({ city }),
       });
 
-      console.log("Response status:", response.status); // Debug statement
-
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Backend error:", errorData); // Debug statement
         throw new Error(errorData.error || 'Failed to fetch recommendations.');
       }
 
       const data = await response.json();
-      console.log("Received recommendations:", data); // Debug statement
-
-      setRecommendations(data);
-      setError('');
+      setRecommendations(data.recommendations);
+      setWeather(data.weather);
     } catch (err) {
-      console.error("Error in handleRecommendations:", err); // Debug statement
+      console.error("Error in handleRecommendations:", err);
       setError(err.message || 'Error fetching recommendations. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getWeatherEmoji = (weatherCondition) => {
+    switch (weatherCondition.toLowerCase()) {
+      case 'sunny':
+        return '☀️';
+      case 'rainy':
+        return '🌧️';
+      case 'cloudy':
+        return '☁️';
+      case 'snowy':
+        return '❄️';
+      default:
+        return '🌤️';
     }
   };
 
   return (
-    <div className="App">
-      <h1>Weather-Based Music Recommendations</h1>
-      <div className="input-container">
-        <input
-          type="text"
-          placeholder="Enter city name"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <button onClick={handleRecommendations}>Get Recommendations</button>
+    <div className="container">
+      <div className="header">
+        <h1 className="app-title">SkyStream</h1>
       </div>
-      {error && <p className="error">{error}</p>}
-      <div className="recommendations">
-        {recommendations.length > 0 ? (
-          recommendations.map((song, index) => (
-            <div key={index} className="song">
-              <p><strong>Track:</strong> {song.track_name}</p>
-              <p><strong>Artist:</strong> {song.artist_name}</p>
-            </div>
-          ))
-        ) : (
-          <p>No recommendations yet. Enter a city to get started!</p>
+
+      <div className="top-right">
+        <div className="city-input-container">
+          <input
+            type="text"
+            placeholder="Enter your city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          />
+          <button onClick={handleRecommendations} disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Get Recommendations'}
+          </button>
+        </div>
+
+        {error && <p className="error">{error}</p>}
+
+        {weather && (
+          <div className="weather-display">
+            <h2>
+              {weather.city}: {weather.condition} {getWeatherEmoji(weather.condition)}
+            </h2>
+          </div>
         )}
+
+        {recommendations.length > 0 && (
+          <div className="recommendations-list">
+            {recommendations.map((song, index) => (
+              <div key={index} className="song-item">
+                <p className="song-title">{song.track_name}</p>
+                <p className="song-artist">{song.artist_name}</p>
+                <button className="play-button">▶</button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Empty space for future music player */}
+      <div className="main-content">
+        {/* Future content will go here */}
       </div>
     </div>
   );
