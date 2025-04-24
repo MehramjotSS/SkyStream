@@ -1,0 +1,41 @@
+.bottom-right-signature {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: fadeInSlideUp 1.5s ease forwards;
+  }
+  
+  .bottom-right-signature p{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .bottom-right-signature a {
+    font-family: 'Courier New', monospace;
+    color: #ffffff;
+    font-size: 1rem;
+    text-decoration: none;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .bottom-right-signature a:hover {
+    color: #ffc107;
+  }
+  
+  /* Animation similar to Title */
+  @keyframes fadeInSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px) translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) translateX(0);
+    }
+  }
+  

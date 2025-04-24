@@ -1,0 +1,21 @@
+.weather-display {
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 10px;
+  }
+  
+  .weather-display h2 {
+    font-size: 1.6rem;
+    margin: 0;
+    text-align: center; /* Centers the text inside the h2 element */
+  }
+  
+  .weather-display h2 span {
+    font-size: 1.8rem;
+    margin-left: 10px;
+  }
+  

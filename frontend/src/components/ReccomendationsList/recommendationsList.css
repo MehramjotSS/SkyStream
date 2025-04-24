@@ -1,0 +1,19 @@
+.recommendations-list {
+    max-height: 600px; /* Adjust height for more songs */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    padding: 10px;
+  }
+  
+  .recommendations-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .recommendations-list::-webkit-scrollbar-thumb {
+    background-color: #1e90ff;
+    border-radius: 4px;
+  }
+  
+  .recommendations-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  

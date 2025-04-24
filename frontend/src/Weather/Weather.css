@@ -1,0 +1,111 @@
+.weather-container {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: background-image 1s ease, background-color 1s ease;
+  padding: 20px;
+}
+.current-weather {
+  text-align: center;
+  margin-bottom: 30px;
+}
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: background-image 1s ease;
+}
+
+.weather-card {
+  background: rgba(225, 218, 218, 0.25);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+}
+
+.temp {
+  font-size: 3rem;
+  font-weight: bold;
+  display: block;
+}
+
+.forecast-cards {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.forecast-card {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px;
+  border-radius: 10px;
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+.sound-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.loading-spinner {
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 5px solid white;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.day {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  width: 80%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.day:hover {
+  transform: scale(1.05);
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.2em;
+  margin: 5px 0;
+}

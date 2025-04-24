@@ -1,0 +1,79 @@
+.song-card {
+  background: linear-gradient(135deg, #dbeafe, #fce4ec); /* soft blue to soft pink */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 100%;
+}
+
+.song-card.active {
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+}
+
+.song-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.song-text {
+  flex: 1;
+  min-width: 250px;
+}
+
+.song-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0 0 8px;
+}
+
+.song-artist {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin: 0 0 12px;
+}
+
+.play-button {
+  background: linear-gradient(135deg, #fbb1bd, #b5d0ff); /* baby pink to blue */
+  color: #2c2c2c;
+  border: none;
+  padding: 16px 30px; /* adjusted padding to better fit text */
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap; /* prevents text from wrapping */
+  overflow: hidden; /* hides any overflow just in case */
+  text-overflow: ellipsis; /* adds ... if text is too long */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  text-align: center; /* centers the text in the button */
+}
+
+.play-button:hover {
+  transform: scale(1.07);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.video-container {
+  margin-top: 10px;
+  margin-left: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.no-video {
+  margin-top: 10px;
+  font-weight: 500;
+  color: #e74c3c;
+}

@@ -1,0 +1,40 @@
+.music-header-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px 20px;
+    margin: 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    color: #f0f8ff;
+  }
+  
+  .music-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .music-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .music-subtitle {
+    font-size: 1.1rem;
+    color: #d1d9e6;
+    font-weight: 300;
+    margin-top: 10px;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+  }
+  
