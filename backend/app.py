@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import numpy as np
 import pandas as pd
@@ -13,7 +13,7 @@ load_dotenv()
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 CORS(app)
 
 # Load and filter dataset
@@ -123,6 +123,16 @@ def recommend():
     except Exception as e:
         print("Error in recommend function:", e)
         return jsonify({"error": "An internal server error occurred"}), 500
-    
+
+# Serve React frontend
+@app.route('/')
+@app.route('/<path:path>')
+def serve_react(path=''):
+    file_path = os.path.join(app.static_folder, path)
+    if path != "" and os.path.exists(file_path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
 if __name__ == '__main__':
     app.run(port=5001, debug=True, use_reloader=False)

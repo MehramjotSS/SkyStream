@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Weather.css';
 
-
 const apiKey = 'ab01a959371c6df124a30abc8159667e';
 
 const weatherConditions = {
@@ -12,50 +11,57 @@ const weatherConditions = {
     color: 'rgba(255, 215, 0, 0.3)'
   },
   Rain: {
-    image: '/Weather/img/Rainy.jpg',
-    sound: '/Weather/sound/rain.mp3',
+    image: '/img/Rainy.jpg',
+    sound: '/sound/rain.mp3',
     emoji: '🌧️',
     color: 'rgba(70, 130, 180, 0.3)'
   },
   Snow: {
-    image: '/Weather/img/Snowy.jpg',
-    sound: '/Weather/sound/snow.mp3',
+    image: '/img/Snowy.jpg',
+    sound: '/sound/snow.mp3',
     emoji: '❄️',
     color: 'rgba(230, 230, 250, 0.3)'
   },
   Clouds: {
-    image: '/Weather/img/Cloudy.jpg',
-    sound: '/Weather/sound/cloudy.mp3',
+    image: '/img/Cloudy.jpg',
+    sound: '/sound/cloudy.mp3',
     emoji: '☁️',
     color: 'rgba(119, 136, 153, 0.3)'
   },
   Thunderstorm: {
-    image: '/Weather/img/thunderstorm.jpg',
-    sound: '/Weather/sound/thunder.mp3',
+    image: '/img/thunderstorm.jpg',
+    sound: '/sound/cloudy.mp3',
     emoji: '⛈️',
     color: 'rgba(72, 61, 139, 0.3)'
   },
   Drizzle: {
-    image: '/Weather/img/drizzle.jpg',
-    sound: '/Weather/sound/rain.mp3',
+    image: '/img/drizzle.jpg',
+    sound: '/sound/rain.mp3',
     emoji: '🌦️',
     color: 'rgba(135, 206, 235, 0.3)'
   },
   Mist: {
-    image: '/Weather/img/mist.jpg',
-    sound: '/Weather/sound/wind.mp3',
+    image: '/img/mist.jpg',
+    sound: '/sound/rain.mp3',
     emoji: '🌫️',
     color: 'rgba(211, 211, 211, 0.3)'
   },
   default: {
-    image: '/Weather/img/default.jpg',
-    sound: '/Weather/sound/default.mp3',
+    image: '/img/clear.jpg',
+    sound: '/sound/clear.mp3',
     emoji: '🌈',
     color: 'rgba(147, 112, 219, 0.3)'
   }
 };
 
-const WeatherPage = ({ city }) => {
+const getInitialCity = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('city') || 'Ludhiana';
+};
+
+const WeatherPage = () => {
+  const [city, setCity] = useState(getInitialCity());
+  const [inputCity, setInputCity] = useState(city);
   const [weatherData, setWeatherData] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,25 +72,17 @@ const WeatherPage = ({ city }) => {
   const containerRef = useRef(null);
 
   const fetchCurrentWeather = async (lat, lon) => {
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
-      );
-      return await response.json();
-    } catch (err) {
-      throw new Error('Failed to fetch current weather');
-    }
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+    );
+    return await response.json();
   };
 
   const fetchForecast = async (lat, lon) => {
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
-      );
-      return await response.json();
-    } catch (err) {
-      throw new Error('Failed to fetch forecast');
-    }
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+    );
+    return await response.json();
   };
 
   const getCoordinates = async () => {
@@ -98,11 +96,11 @@ const WeatherPage = ({ city }) => {
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
       );
       const data = await response.json();
-      
+
       if (data.cod === '404') {
         throw new Error('City not found');
       }
-      
+
       return data.coord;
     } catch (err) {
       throw new Error('Failed to get coordinates: ' + err.message);
@@ -111,13 +109,11 @@ const WeatherPage = ({ city }) => {
 
   const updateWeatherTheme = (condition) => {
     const conditionData = weatherConditions[condition] || weatherConditions.default;
-    
-    // Update background
+
     if (containerRef.current) {
       containerRef.current.style.backgroundImage = `url(${conditionData.image})`;
     }
-    
-    // Update audio
+
     if (audioRef.current) {
       audioRef.current.src = conditionData.sound;
       if (!isMuted && !requiresInteraction) {
@@ -127,7 +123,7 @@ const WeatherPage = ({ city }) => {
         });
       }
     }
-    
+
     return conditionData;
   };
 
@@ -142,39 +138,41 @@ const WeatherPage = ({ city }) => {
     }
   };
 
+  const fetchWeatherData = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const coords = await getCoordinates();
+      if (!coords) return;
+
+      const [current, forecastData] = await Promise.all([
+        fetchCurrentWeather(coords.lat, coords.lon),
+        fetchForecast(coords.lat, coords.lon)
+      ]);
+
+      setWeatherData(current);
+      setForecast(forecastData.list);
+
+      const condition = current.weather[0].main;
+      updateWeatherTheme(condition);
+    } catch (err) {
+      setError(err.message);
+      updateWeatherTheme('default');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCitySubmit = (e) => {
+    if (e.key === 'Enter') {
+      setCity(inputCity);
+    }
+  };
+
   useEffect(() => {
-    // Initialize audio
     audioRef.current = new Audio();
     audioRef.current.loop = true;
     audioRef.current.volume = 0.3;
-
-    const fetchWeatherData = async () => {
-      setLoading(true);
-      setError('');
-      
-      try {
-        const coords = await getCoordinates();
-        if (!coords) return;
-        
-        const [current, forecast] = await Promise.all([
-          fetchCurrentWeather(coords.lat, coords.lon),
-          fetchForecast(coords.lat, coords.lon)
-        ]);
-        
-        setWeatherData(current);
-        setForecast(forecast.list);
-        
-        // Update theme based on current weather
-        const condition = current.weather[0].main;
-        updateWeatherTheme(condition);
-        
-      } catch (err) {
-        setError(err.message);
-        updateWeatherTheme('default');
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchWeatherData();
 
@@ -225,15 +223,25 @@ const WeatherPage = ({ city }) => {
   const conditionData = weatherConditions[currentCondition] || weatherConditions.default;
 
   return (
-    <div 
+    <div
       ref={containerRef}
-      className="weather-container" 
-      style={{ 
+      className="weather-container"
+      style={{
         backgroundColor: conditionData.color,
         backgroundImage: `url(${conditionData.image})`
       }}
       onClick={handleUserInteraction}
     >
+      <div className="city-input-box">
+        <input
+          type="text"
+          placeholder="Enter city..."
+          value={inputCity}
+          onChange={(e) => setInputCity(e.target.value)}
+          onKeyDown={handleCitySubmit}
+        />
+      </div>
+
       <div className="weather-content">
         <div className="current-weather">
           <h1>
@@ -260,7 +268,7 @@ const WeatherPage = ({ city }) => {
               const date = new Date(item.dt * 1000);
               const dayCondition = item.weather[0].main;
               const dayData = weatherConditions[dayCondition] || weatherConditions.default;
-              
+
               return (
                 <div key={index} className="forecast-card">
                   <h3>{date.toLocaleDateString('en-US', { weekday: 'short' })}</h3>
@@ -273,10 +281,7 @@ const WeatherPage = ({ city }) => {
           </div>
         </div>
 
-        <button 
-          className="sound-toggle"
-          onClick={toggleMute}
-        >
+        <button className="sound-toggle" onClick={toggleMute}>
           {isMuted || requiresInteraction ? '🔇 Sound Off' : '🔊 Sound On'}
         </button>
 

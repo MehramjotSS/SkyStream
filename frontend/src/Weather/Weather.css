@@ -109,3 +109,37 @@ p {
   font-size: 1.2em;
   margin: 5px 0;
 }
+
+.city-input-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.city-input-box input {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  width: 200px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 2px 2px 5px rgba(255,255,255,0.5), inset -2px -2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.city-input-box input::placeholder {
+  color: #555;
+  opacity: 0.8;
+}
+
+.city-input-box input:focus {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 8px rgba(0, 150, 255, 0.4);
+}
