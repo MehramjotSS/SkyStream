@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css'; // Custom styling for the Home component
-import backgroundImage from '/Users/mehramjotsoei/Desktop/SkyStream(YT)3/frontend/src/Home/HomeBackground2.jpg';
+import backgroundImage from '../Home/HomeBackground2.jpg';
+
 import Signature from '../components/Signature/Signature';
 
 
