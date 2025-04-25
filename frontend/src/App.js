@@ -29,7 +29,7 @@ function App() {
 
     try {
       // Fetch recommendations from backend
-      const response = await fetch('http://127.0.0.1:5001/recommend', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/recommend`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
