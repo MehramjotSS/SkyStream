@@ -5,25 +5,25 @@ const apiKey = 'ab01a959371c6df124a30abc8159667e';
 
 const weatherConditions = {
   Clear: {
-    image: '/img/clear.jpg',
+    image: '/img/clear4.jpg',
     sound: '/sound/clear.mp3',
     emoji: '☀️',
     color: 'rgba(255, 215, 0, 0.3)'
   },
   Rain: {
-    image: '/img/Rainy.jpg',
+    image: '/img/rainy2.jpg',
     sound: '/sound/rain.mp3',
     emoji: '🌧️',
     color: 'rgba(70, 130, 180, 0.3)'
   },
   Snow: {
-    image: '/img/Snowy.jpg',
+    image: '/img/snowy.jpg',
     sound: '/sound/snow.mp3',
     emoji: '❄️',
     color: 'rgba(230, 230, 250, 0.3)'
   },
   Clouds: {
-    image: '/img/Cloudy.jpg',
+    image: '/img/cloudy3.jpg',
     sound: '/sound/cloudy.mp3',
     emoji: '☁️',
     color: 'rgba(119, 136, 153, 0.3)'
@@ -41,13 +41,13 @@ const weatherConditions = {
     color: 'rgba(135, 206, 235, 0.3)'
   },
   Mist: {
-    image: '/img/mist.jpg',
+    image: '/img/misty2.jpg',
     sound: '/sound/rain.mp3',
     emoji: '🌫️',
     color: 'rgba(211, 211, 211, 0.3)'
   },
   default: {
-    image: '/img/clear.jpg',
+    image: '/img/clear4.jpg',
     sound: '/sound/clear.mp3',
     emoji: '🌈',
     color: 'rgba(147, 112, 219, 0.3)'
